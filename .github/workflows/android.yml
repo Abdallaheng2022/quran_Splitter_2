@@ -1,34 +1,44 @@
 name: Android CI
-
 on:
   workflow_dispatch:
   push:
     branches: [ "main" ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
-
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+
+      # يدوّر على مجلد app_src أياً كان مكانه في المستودع، ويحفظ مساره.
+      - name: Locate app_src
+        id: loc
+        run: |
+          SRC=$(find . -type d -name app_src -not -path '*/app/*' | head -n1)
+          if [ -z "$SRC" ]; then
+            echo "::error::لم يتم العثور على مجلد app_src في المستودع. تأكد من رفع app_src (بداخله lib/ و pubspec.yaml و AndroidManifest.xml)."
+            exit 1
+          fi
+          SRC=$(cd "$SRC" && pwd)
+          echo "Found app_src at: $SRC"
+          echo "src=$SRC" >> "$GITHUB_OUTPUT"
 
       - name: Scaffold android project
         run: flutter create --org com.example --project-name quran_splitter --platforms android app
 
       - name: Overlay source
         run: |
+          SRC="${{ steps.loc.outputs.src }}"
           rm -rf app/lib
-          cp -rf app_src/lib app/lib
-          cp -f app_src/pubspec.yaml app/pubspec.yaml
-          cp -f app_src/AndroidManifest.xml app/android/app/src/main/AndroidManifest.xml
+          cp -rf "$SRC/lib" app/lib
+          cp -f "$SRC/pubspec.yaml" app/pubspec.yaml
+          cp -f "$SRC/AndroidManifest.xml" app/android/app/src/main/AndroidManifest.xml
 
       - name: Patch gradle
         run: |
@@ -53,7 +63,7 @@ jobs:
 
       - name: Build APK
         working-directory: app
-        # ⬇⬇⬇ بدّل العنوان ده بعنوان سيرفرك من Render ⬇⬇⬇
+        # ⬇⬇⬇ بدّل العنوان ده بعنوان سيرفر البايثون بتاعك على Render ⬇⬇⬇
         run: flutter build apk --release --dart-define=API_BASE=https://REPLACE-WITH-YOUR-RENDER-URL.onrender.com
 
       - uses: actions/upload-artifact@v4
