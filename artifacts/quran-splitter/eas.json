@@ -1,0 +1,48 @@
+{
+  "cli": {
+    "version": ">= 12.0.0",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "base": {
+      "node": "24.0.0",
+      "env": {
+        "EXPO_PUBLIC_DOMAIN": "REPLACE_WITH_DEPLOYED_API_HOST",
+        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "REPLACE_WITH_CLERK_PUBLISHABLE_KEY",
+        "EXPO_PUBLIC_CLERK_PROXY_URL": "",
+        "EXPO_PUBLIC_REVENUECAT_TEST_API_KEY": "test_xLSabWtZtMzbEtcikWtEjrGPTXe",
+        "EXPO_PUBLIC_REVENUECAT_IOS_API_KEY": "appl_FfmDDtUatMsiLilKbuStXqNWiiG",
+        "EXPO_PUBLIC_REVENUECAT_ANDROID_API_KEY": "goog_hEbzSXtNupRdJfaAIiApDOrzDVH"
+      }
+    },
+    "development": {
+      "extends": "base",
+      "developmentClient": true,
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "preview": {
+      "extends": "base",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "production": {
+      "extends": "base",
+      "android": {
+        "buildType": "app-bundle"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./play-service-account.json",
+        "track": "internal"
+      }
+    }
+  }
+}
