@@ -1,0 +1,23 @@
+name: quran_splitter
+description: تطبيق تقسيم التلاوة القرآنية — عميل خفيف يتصل بـ API على السيرفر.
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.0                 # نداءات الـ API
+  in_app_purchase: ^3.2.0     # اشتراك Google Play Billing
+  file_picker: ^8.0.0         # اختيار ملف الصوت
+  path_provider: ^2.1.0       # حفظ ملف الـ zip
+  shared_preferences: ^2.2.0  # حفظ توكن الدخول
+
+dev_dependencies:
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
