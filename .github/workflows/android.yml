@@ -64,7 +64,7 @@ jobs:
       - name: Build APK
         working-directory: app
         # ⬇⬇⬇ بدّل العنوان ده بعنوان سيرفر البايثون بتاعك على Render ⬇⬇⬇
-        run: flutter build apk --release --dart-define=API_BASE=https://REPLACE-WITH-YOUR-RENDER-URL.onrender.com
+        run: flutter build apk --release --dart-define=API_BASE=https://abdo96-quran-splitter-space.hf.space
 
       - uses: actions/upload-artifact@v4
         with:
